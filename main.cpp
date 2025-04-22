@@ -16,7 +16,8 @@ int main() {
 
     OrbitControls controls(*camera, canvas);
 
-    const int numParticles = 320 * 240;
+    std::pair depth_dim = {320, 240};
+    const int numParticles = depth_dim.first * depth_dim.second;
     auto mat = MeshBasicMaterial::create();
     mat->side = Side::Double;
     auto im = InstancedMesh::create(PlaneGeometry::create(0.005, 0.005), mat, numParticles);
@@ -37,8 +38,8 @@ int main() {
 
         // Configure and start the pipeline
         rs2::config cfg;
-        cfg.enable_stream(RS2_STREAM_DEPTH, 320, 240, RS2_FORMAT_Z16, 30);
-        cfg.enable_stream(RS2_STREAM_COLOR, 640, 480, RS2_FORMAT_BGR8, 30);
+        cfg.enable_stream(RS2_STREAM_DEPTH, depth_dim.first, depth_dim.second, RS2_FORMAT_Z16, 30);
+        cfg.enable_stream(RS2_STREAM_COLOR, 960 , 540 , RS2_FORMAT_BGR8, 30);
 
         // Start streaming with default recommended configuration
         p.start(cfg);
